@@ -1,2 +1,3 @@
-gameOver logic
 gameLogic logic
+
+dom display
