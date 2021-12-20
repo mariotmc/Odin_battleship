@@ -1,25 +1,18 @@
-const Player = () => {
-  return { ships: [], markedFields: [], score: 0 };
+const Player = (name) => {
+  return { name, ships: [] };
 };
 
 const Ship = (coordinates) => {
   return {
     position: coordinates,
     length: coordinates.length,
-    isSunk: () => {
-      if (length === 0) {
-        return true;
-      } else {
-        return false;
-      }
-    },
+    isSunk: false,
   };
 };
 
-const Gameboard = (() => {
+const Gameboard = () => {
   // prettier-ignore
-  const Board = () => {
-    return ["A1", "B1", "C1", "D1", "E1", "F1", "G1", "H1", "I1", "J1",
+  board = ["A1", "B1", "C1", "D1", "E1", "F1", "G1", "H1", "I1", "J1",
     "A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2", "I2", "J2",
     "A3", "B3", "C3", "D3", "E3", "F3", "G3", "H3", "I3", "J3",
     "A4", "B4", "C4", "D4", "E4", "F4", "G4", "H4", "I4", "J4",
@@ -30,105 +23,97 @@ const Gameboard = (() => {
     "A9", "B9", "C9", "D9", "E9", "F9", "G9", "H9", "I9", "J9",
     "A10", "B10", "C10", "D10", "E10", "F10", "G10", "H10", "I10", "J10"
     ];
-  }
-
-  const gameboard = Board();
-  const player1board = Board();
-  const player2board = Board();
 
   const placeShip = (player, coordinates) => {
-    const currentPlayer = player;
-
     const ship = Ship(coordinates);
-    currentPlayer.ships.push(ship);
+    player.ships.push(ship);
 
     coordinates.forEach((coordinate) => {
-      const element = gameboard.find((element) => element === coordinate);
-      const index = gameboard.indexOf(element);
+      const element = gameboard.board.find((element) => element === coordinate);
+      const index = gameboard.board.indexOf(element);
 
-      if (currentPlayer === player1) {
-        player1board[index] = "Ship";
-      } else if (currentPlayer === player2) {
-        player2board[index] = "Ship";
-      }
+      player.gameboard.board[index] = "Ship";
     });
   };
 
   const receiveAttack = (player, coordinate) => {
-    const currentPlayer = player;
+    const index = gameboard.board.indexOf(coordinate);
 
-    const index = gameboard.indexOf(coordinate);
-
-    if (currentPlayer === player1) {
-      if (!currentPlayer.markedFields.includes(coordinate)) {
-        if (player1board[index] === "Ship") {
-          currentPlayer.ships.forEach((ship) => {
-            ship.position.forEach((element) => {
-              if (element === coordinate) {
-                ship.length--;
-                // call gameOver() to check if either player won/lost the game
+    if (player.gameboard.board[index] !== "Hit") {
+      if (player.gameboard.board[index] === "Ship") {
+        player.ships.forEach((ship) => {
+          ship.position.forEach((element) => {
+            if (element === coordinate) {
+              ship.length--;
+              markField(player, coordinate);
+              if (ship.length === 0) {
+                ship.isSunk = true;
+                gameLogic.gameOver(player);
               }
-            });
+            }
           });
-        } else {
-          markField(currentPlayer, coordinate);
-        }
+        });
       } else {
-        // needs logic on preventing player from making repeated guess
-        console.log("you already guessed this");
+        markField(player, coordinate);
       }
-    } else if (currentPlayer === player2) {
-      if (!currentPlayer.markedFields.includes(coordinate)) {
-        if (player2board[index] === "Ship") {
-          currentPlayer.ships.forEach((ship) => {
-            ship.position.forEach((element) => {
-              if (element === coordinate) {
-                ship.length--;
-                // call gameOver() to check if either player won/lost the game
-              }
-            });
-          });
-        } else {
-          markField(currentPlayer, coordinate);
-        }
-      } else {
-        // needs logic on preventing player from making repeated guess
-        console.log("you already guessed this");
-      }
+    } else {
+      // needs logic on preventing player from making duplicate guess
+      console.log(`${player.name} you already guessed ${coordinate}`);
     }
   };
 
   const markField = (player, coordinate) => {
-    player.markedFields.push(coordinate);
-    console.log(player.markedFields);
+    const index = gameboard.board.indexOf(coordinate);
+    player.gameboard.board[index] = "Hit";
   };
 
-  return { Board, placeShip, receiveAttack, gameboard, player1board, player2board };
-})();
+  return { board, placeShip, receiveAttack, markField };
+};
 
 const gameLogic = (() => {
-  // here comes the game logic, turn based, currentPlayer switch, init game with x ships, then rounds
+  // here comes the game logic, turn based, player switch, init game with x ships, then rounds
+  const gameInit = () => {
+    // prompt players to place ships until ships.length === 5
+  };
 
-  const gameOver = () => {
-    // if all ships of any player have sunk game is over and message should appear
-    // maybe forEach Ship if isSunk === true
+  const gameOver = (player) => {
+    let sunkenShips = 0;
+
+    player.ships.forEach((ship) => {
+      if (ship.isSunk === true) {
+        sunkenShips += 1;
+      }
+    });
+
+    if (sunkenShips === player.ships.length) {
+      console.log(`${player.name} lost`);
+    }
   };
 
   return { gameOver };
 })();
 
-const player1 = Player();
-const player2 = Player();
+const player1 = Player("Selwyn");
+const player2 = Player("Computer");
 
-Gameboard.placeShip(player1, ["A1", "B1", "C1"]);
-Gameboard.placeShip(player1, ["A2", "B2", "C2"]);
-Gameboard.receiveAttack(player1, "A1");
-Gameboard.receiveAttack(player1, "B1");
-Gameboard.receiveAttack(player1, "D1");
-Gameboard.receiveAttack(player1, "E5");
-Gameboard.receiveAttack(player1, "C4");
-Gameboard.receiveAttack(player1, "J1");
-Gameboard.receiveAttack(player1, "D7");
-Gameboard.receiveAttack(player1, "D7");
-Gameboard.receiveAttack(player2, "D7");
-Gameboard.receiveAttack(player2, "D7");
+const gameboard = Gameboard();
+player1.gameboard = Gameboard();
+player2.gameboard = Gameboard();
+
+player1.gameboard.placeShip(player1, ["A1", "B1", "C1"]);
+player1.gameboard.placeShip(player1, ["A2", "B2", "C2"]);
+player1.gameboard.placeShip(player1, ["A3", "B3", "C3"]);
+
+player2.gameboard.placeShip(player2, ["A1", "B1", "C1"]);
+player2.gameboard.placeShip(player2, ["A2", "B2", "C2"]);
+player2.gameboard.placeShip(player2, ["A3", "B3", "C3"]);
+
+player1.gameboard.receiveAttack(player1, "A1");
+player1.gameboard.receiveAttack(player1, "B1");
+player1.gameboard.receiveAttack(player1, "C1");
+
+player2.gameboard.receiveAttack(player2, "A2");
+player2.gameboard.receiveAttack(player2, "B2");
+player2.gameboard.receiveAttack(player2, "C2");
+player2.gameboard.receiveAttack(player2, "C2");
+player2.gameboard.receiveAttack(player2, "C3");
