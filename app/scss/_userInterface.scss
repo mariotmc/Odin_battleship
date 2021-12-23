@@ -1,0 +1,18 @@
+@use "functions" as *;
+@use "variables" as *;
+
+main {
+  display: flex;
+  gap: rem(100);
+  text-align: center;
+}
+
+.player-names-container {
+  display: flex;
+  gap: rem(100);
+}
+
+.boards {
+  display: flex;
+  gap: rem(100);
+}
