@@ -1,0 +1,44 @@
+@use "functions" as *;
+@use "variables" as *;
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  width: rem(200);
+  height: rem(200);
+
+  .player-cell,
+  .computer-cell {
+    border: rem(1) solid var(--primary-dark);
+    width: rem(20);
+    height: rem(20);
+  }
+}
+
+.letter-coordinates {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  width: rem(200);
+  height: rem(20);
+  margin-left: rem(20);
+  text-align: center;
+
+  .letter-coordinate {
+    width: rem(20);
+    height: rem(20);
+  }
+}
+
+.number-coordinates {
+  display: grid;
+  grid-template-rows: repeat(10, 1fr);
+  width: rem(20);
+  height: rem(200);
+  text-align: center;
+
+  .number-coordinate {
+    width: rem(20);
+    height: rem(20);
+  }
+}
