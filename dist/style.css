@@ -1,13 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Yusei+Magic&display=swap");
 :root {
-  --font-body: Arial, sans-serif;
+  --font-title: "Yusei Magic", sans-serif;
+  --font-body: "Roboto", sans-serif;
 }
 
 :root {
-  --white: hsl(0, 0%, 100%);
-  --black: hsl(0, 0%, 0%);
+  --primary-dark: #333;
+  --secondary-dark: #444;
+  --primary-light: #eee;
+  --secondary-light: #ddd;
+  --bg-hover: #ccc;
 }
 
 html {
+  height: 100%;
   font-size: 100%;
   box-sizing: border-box;
 }
@@ -19,8 +25,10 @@ html {
 }
 
 body {
+  height: 100%;
   margin: 0;
   padding: 0;
+  font-family: var(--font-body);
 }
 
 h1,
@@ -34,4 +42,109 @@ a,
 a:visited,
 a:active {
   text-decoration: none;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3.125rem 1.25rem;
+  background-color: var(--primary-dark);
+  color: var(--primary-light);
+  font-family: var(--font-title);
+}
+header .fa-check-circle {
+  font-size: 2.5rem;
+}
+header h1 {
+  margin: auto 0.625rem auto 0;
+  font-size: 2.5rem;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3.125rem;
+  background-color: var(--primary-dark);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: 1.625rem;
+  padding-top: 15.625rem;
+}
+form label {
+  margin-bottom: 0.625rem;
+  color: var(--font-color);
+}
+form #name {
+  width: 15.625rem;
+  padding: 0.3125rem;
+  font-size: 1.125rem;
+  color: var(--font-color);
+  border: 0.125rem solid var(--primary-dark);
+  border-radius: 0.3125rem;
+  outline: none;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  width: 12.5rem;
+  height: 12.5rem;
+}
+.board .player-cell,
+.board .computer-cell {
+  border: 0.0625rem solid var(--primary-dark);
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.letter-coordinates {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  width: 12.5rem;
+  height: 1.25rem;
+  margin-left: 1.25rem;
+  text-align: center;
+}
+.letter-coordinates .letter-coordinate {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.number-coordinates {
+  display: grid;
+  grid-template-rows: repeat(10, 1fr);
+  width: 1.25rem;
+  height: 12.5rem;
+  text-align: center;
+}
+.number-coordinates .number-coordinate {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+main {
+  display: flex;
+  gap: 6.25rem;
+  text-align: center;
+}
+
+.player-names-container {
+  display: flex;
+  gap: 6.25rem;
+}
+
+.boards {
+  display: flex;
+  gap: 6.25rem;
 }/*# sourceMappingURL=style.css.map */
